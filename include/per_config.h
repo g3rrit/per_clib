@@ -1,10 +1,10 @@
 #ifndef PER_CONFIG_H_
 #define PER_CONFIG_H_
 
-#include "per_std.h"
+#include "per_util.h"
 
 typedef struct per_config_t {
-    void * (*alloc_fn)(uint size);
+    per_rcode (*alloc_fn)(uint size, void ** res);
     void (*free_fn)();
     void (*memcpy_fn)(void * dst, void * src, uint size);
 } per_config_t;

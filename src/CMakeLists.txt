@@ -1,11 +1,11 @@
 
 set(SOURCES
-    "${PROJECT_SOURCE_DIR}/src/per_std.c"
+    "${PROJECT_SOURCE_DIR}/src/per_util.c"
     "${PROJECT_SOURCE_DIR}/src/per_config.c"
 )
 
 set(EXTERNAL_INCLUDES
-    "${PROJECT_SOURCE_DIR}/include/per_std.h"
+    "${PROJECT_SOURCE_DIR}/include/per_util.h"
     "${PROJECT_SOURCE_DIR}/include/per_config.h"
 )
 

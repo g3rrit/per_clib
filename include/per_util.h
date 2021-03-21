@@ -1,5 +1,5 @@
-#ifndef PER_STD_H_
-#define PER_STD_H_
+#ifndef PER_UTIL_H_
+#define PER_UTIL_H_
 
 // ----- TYPES -----
 
@@ -18,11 +18,15 @@ typedef double f64;
 
 typedef unsigned int uint;
 
+#define nullptr ((void*)0)
+
 // ----- ERROR CODES -----
 
 typedef enum per_rcode {
     PER_R_SUCCESS = 0,
-    PER_R_FAILURE
+    PER_R_FAILURE,
+
+    PER_R_ALLOC_FAILURE,
 } per_rcode;
 
 // ----- INITIALIZATION/CLEANUP -----
@@ -34,7 +38,7 @@ typedef struct per_config_t per_config_t;
  * 
  * This functions has to be called before any other function in the library is used.
  * 
- * @param[in] per_config The configuration that is used to initialize the libarary
+ * @param[in] per_config The configuration that is used to initialize the library
  */
 void per_init(per_config_t const * per_config);
 
@@ -56,10 +60,12 @@ void per_cleanup();
  * Similar to `malloc`.
  * 
  * @param[in] size The size in byte that the allocated memory is going to take up.
+ * @param[out] res Pointer to pointer to allocated memory region.
  * 
- * @returns        A pointer to the allocated memory area.
+ * @returns        Error Code.
+ * @retval PER_R_ALLOC_FAILURE If allocation failed.
  */
-void * per_alloc(uint size);
+per_rcode per_alloc(uint size, void ** res);
 
 /**
  * Frees a dynamically allocated memory area previously allocated by @ref per_alloc.

@@ -1,4 +1,4 @@
-#include "per_std.h"
+#include "per_util.h"
 #include "per_config.h"
 
 per_config_t PER_STATIC_CONFIG;
@@ -14,9 +14,16 @@ per_config_t const * per_config_get()
 #include <string.h>
 
 // TODO: handle cases where we can't cast uint to size_t
-static void * per_static_libc_alloc(uint size)
+static per_rcode per_static_libc_alloc(uint size, void ** res)
 {
-    return malloc((size_t) size);
+    void * _res = malloc((size_t) size);
+    if (res == 0) {
+        return PER_R_ALLOC_FAILURE;
+    }
+
+    *res = _res;
+
+    return PER_R_SUCCESS;
 }
 
 static void per_static_libc_memcpy(void * dst, void * src, uint size)

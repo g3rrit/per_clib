@@ -1,4 +1,4 @@
-#include "per_std.h"
+#include "per_util.h"
 #include "per_config.h"
 
 #define PER_OFFSETOF( type, member ) ( (unsigned long long) &( ( (type *) 0 )->member ) )
@@ -25,14 +25,20 @@ typedef struct per_ptr_t {
     u8 data[];
 } per_ptr_t;
 
-void * per_alloc(uint size)
+per_rcode per_alloc(uint size, void ** res)
 {
     per_config_t const * per_config = per_config_get();
-    per_ptr_t * per_ptr = per_config->alloc_fn(sizeof(per_ptr_t) + size);
+    per_rcode rcode = PER_R_SUCCESS;
+    per_ptr_t * per_ptr = nullptr;
+    if ((rcode = per_config->alloc_fn(sizeof(per_ptr_t) + size, &per_ptr)) != PER_R_SUCCESS) {
+        return rcode;
+    }
 
     per_ptr->rc = 1;
 
-    return &per_ptr->data;
+    *res = &per_ptr->data;
+
+    return PER_R_SUCCESS;
 }
 
 void per_free(void * ptr)
